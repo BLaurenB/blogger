@@ -20,10 +20,17 @@ class ArticlesController < ApplicationController
     # @article.body = params[:article][:body] #because the hash is nested
     # @article.save
 
-    @article = Article.new(params[:article])
+    # @article = Article.new(params[:article]) #BAD! ERRORS! BAD! this blindly accepts any params from the http request.
+    @article = Article.new(article_params)
     @article.save
 
     redirect_to article_path(@article)
   end
+
+  private
+  def article_params
+    params.require(:article).permit(:title, :body)
+  end
+
 
 end
